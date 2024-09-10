@@ -1,9 +1,14 @@
 __pycache__/
 NEIMS/
 neims_model/
-data/
+
 
 *.txt
 *.out
 *.sdf
 *.pth
+*.pt
+*.csv
+*.sdf
+*.mgf
+*.db
