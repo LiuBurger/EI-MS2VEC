@@ -40,12 +40,10 @@ class Spec2Emb(nn.Module):
             neg_score = pt.bmm(embs_neg, embs_con.unsqueeze(-1)).squeeze(-1) # 
             neg_score = pt.clamp(neg_score, max=self.max_exp, min=-self.max_exp)
             neg_score = -F.logsigmoid(-neg_score).sum(dim=-1)
-            return (pos_score + neg_score).sum()
-        
+            return (pos_score + neg_score).sum() 
         elif mode == 'emb': # emb模式下的masks只mask掉了padding 
             mzs_all, intens_all, masks_all = data  # [batch, seq]
             return self._compute_embedding(mzs_all, intens_all, masks_all, power)
-        
         elif mode == 'finetune':
             data_mea, data_pre_hit, data_pre_nhit = data
             embs_mea = self._compute_embedding(*data_mea, power)

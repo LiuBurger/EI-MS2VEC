@@ -29,7 +29,7 @@ def correct_format(file_path:str, save_path:str):
 def NIST17sdf2mgf(file_path:str, save_path:str):
     suppl = Chem.SDMolSupplier(file_path)
     mols = [mol for mol in suppl if mol]
-    spectrums = []
+    spectra = []
     for mol in mols:
         nistno = mol.GetProp('NISTNO')
         smi = mol.GetProp('SMILES')
@@ -51,8 +51,8 @@ def NIST17sdf2mgf(file_path:str, save_path:str):
         # spectrum.set('mw', mw)
         # spectrum.set('EXACT MASS', ex_mass)
         # spectrum.set('NUM PEAKS', num_peaks)
-        spectrums.append(spectrum)
-    save_as_mgf(spectrums, save_path)
+        spectra.append(spectrum)
+    save_as_mgf(spectra, save_path)
 
 
 def extract_number(filename:str):
@@ -61,7 +61,7 @@ def extract_number(filename:str):
 
 
 def gen_spectrums_from_csv(file_list:list, save:bool=False, save_path:str='data/meassured_spectra.mgf'):
-    spectrums=[]
+    spectra = []
     for i in range(len(file_list)):
         f = 'data/extra_test_set/' + file_list[i]
         data = pd.read_csv(f, header=None)
@@ -77,10 +77,10 @@ def gen_spectrums_from_csv(file_list:list, save:bool=False, save_path:str='data/
         else:                
             spectrum = Spectrum(mz=mz, intensities=inten,
                                 metadata={'compound_name': 'substance_measured_'+str(file_list[i])})
-            spectrums.append(spectrum)
+            spectra.append(spectrum)
     if save:
-        save_as_mgf(spectrums, save_path) 
-    return spectrums
+        save_as_mgf(spectra, save_path) 
+    return spectra
 
 
 # import sqlite3
@@ -112,7 +112,7 @@ def gen_spectrums_from_csv(file_list:list, save:bool=False, save_path:str='data/
 def read_msp2mgf(file_path:str, save_path:str=None):
     f = open(file_path, 'r')
     mols = f.read().split('\n\n')[:-1]
-    spectrums = []
+    spectra = []
     for mol in mols:
         lines = mol.split('\n')
         Name, DB, InChIKey, SMILES, Precursor_type, Spectrum_type, PrecursorMZ, ExactMass, Num_Peaks =\
@@ -156,17 +156,17 @@ def read_msp2mgf(file_path:str, save_path:str=None):
             metadata = {'Name':Name, 'InChIKey':InChIKey,'SMILES':SMILES, 'ExactMass':ExactMass,'Num Peaks':Num_Peaks, 
                         'Spectrum_type':Spectrum_type, 'Precursor_type':Precursor_type,'PrecursorMZ':PrecursorMZ}
             spectrum = Spectrum(mz, inten, metadata)
-            spectrums.append(spectrum)
+            spectra.append(spectrum)
     if save_path:
-        save_as_mgf(spectrums, save_path)
+        save_as_mgf(spectra, save_path)
     else:
-        return spectrums
+        return spectra
 
 
 def intmz(file_path:str, save_path:str=None):
     suppl = load_from_mgf(file_path)
     mols = [m for m in suppl]
-    spectrums = []
+    spectra = []
     for mol in mols:
         mz_dict = {}
         for i in range(len(mol.peaks[0])):
@@ -182,17 +182,17 @@ def intmz(file_path:str, save_path:str=None):
             intens.append(value)
         mzs = np.array(mzs)
         intens = np.array(intens)/max(intens)
-        spectrums.append(Spectrum(mzs, intens, mol.metadata))
+        spectra.append(Spectrum(mzs, intens, mol.metadata))
     if save_path:
-        save_as_mgf(spectrums, save_path)
+        save_as_mgf(spectra, save_path)
     else:
-        return spectrums
+        return spectra
 
 
 def sdf2mgf_MoNA(file_path:str, save_path:str=None):
     suppl = Chem.SDMolSupplier(file_path)
     mols = [mol for mol in suppl if mol]
-    spectrums = []
+    spectra = []
     for mol in mols:
         try:
             spectrum_type = mol.GetProp('SPECTRUM TYPE')
@@ -217,8 +217,8 @@ def sdf2mgf_MoNA(file_path:str, save_path:str=None):
             num_peaks = mol.GetProp('NUM PEAKS')
             spectrum = Spectrum(mzs, intens, metadata = {'ID': id, 'SMILES': smi, 'ExactMass': exactmass, 'Num Peaks': num_peaks,
                                                             'Spectrum_type': spectrum_type, 'Precursor_type': precursor_type, 'PrecursorMZ': precursor_mz})
-            spectrums.append(spectrum)
+            spectra.append(spectrum)
     if save_path:
-        save_as_mgf(spectrums, save_path)
+        save_as_mgf(spectra, save_path)
     else:
-        return spectrums
+        return spectra
