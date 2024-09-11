@@ -1,6 +1,7 @@
 import torch as pt
 import torch.nn as nn
 import torch.nn.functional as F
+import math
 
 
 class Spec2Emb(nn.Module):
@@ -74,15 +75,16 @@ class Linear_Scheduler:
         return next_lr
 
 
-# class Posi_Enco(nn.Module):
-#     def __init__(self, max_len:int=1000, d_model:int=500, gpu:int=7):
-#         super(Posi_Enco, self).__init__()
-#         position = pt.arange(max_len).unsqueeze(-1)
-#         div_term = pt.exp(pt.arange(0, d_model, 2) * -(pt.log(pt.tensor(10000.0)) / d_model))
-#         pos_emb = pt.zeros((max_len, d_model), dtype=pt.float32, device=gpu)
-#         pos_emb[:, 0::2] = pt.sin(position * div_term)
-#         pos_emb[:, 1::2] = pt.cos(position * div_term)
-#         self.pos_emb = pos_emb
+class Posi_Enco(nn.Module):
+    def __init__(self, d_model:int=500, max_len:int=1000, ):
+        super(Posi_Enco, self).__init__()
+        pe = pt.zeros((max_len, d_model), dtype=pt.float32)
+        position = pt.arange(max_len).unsqueeze(-1)
+        div_term = pt.exp(pt.arange(0, d_model, 2) * 
+                          -(math.log(10000.0) / d_model))
+        pe[:, 0::2] = pt.sin(position * div_term)
+        pe[:, 1::2] = pt.cos(position * div_term)
+        self.register_buffer('pe', pe) # 不需要更新的参数
     
-#     def forward(self, mzs):
-#         return self.pos_emb[mzs, :]
+    def forward(self, mzs):
+        return self.pe[mzs, :]
