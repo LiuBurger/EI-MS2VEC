@@ -84,7 +84,7 @@ def collate_fun(keep_prob:np.array, neg_prob:np.array, neg_num:int=5, min_len_mz
                 batch_idx.extend([idx] * len(pos_cen))
                 idx += 1
                 neg_cen = np.random.choice(neg_choice, (len(pos_cen), neg_num), p=neg_prob)
-                mask_neg = (neg_cen != np.array(pos_cen)[:, np.newaxis])
+                mask_neg = neg_cen != np.array(pos_cen)[:, np.newaxis]
                 negs_cen.append(neg_cen)
                 masks_neg.append(mask_neg)
         if len(mzs_con) == 0:
