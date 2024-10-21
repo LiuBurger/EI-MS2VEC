@@ -1,0 +1,1 @@
+nohup python -Bu test.py > test.out
