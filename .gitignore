@@ -4,9 +4,9 @@ neims_model/
 
 
 *.txt
+!requirements.txt
 *.out
 *.sdf
-*.pth
 *.pt
 *.csv
 *.sdf
