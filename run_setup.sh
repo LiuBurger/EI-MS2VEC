@@ -1,17 +1,11 @@
 #!/bin/bash
 
-echo "Creating conda environment: EIMS2VEC"
-conda create -n EIMS2VEC -y
+echo "Creating conda environment: eims2vec"
+conda create -n eims2vec python=3.11.5 -y
 
-echo "Activating EIMS2VEC environment"
-conda activate EIMS2VEC
-
-if [ -f "requirements.txt" ]; then
-    echo "Installing packages from requirements.txt"
-    pip install -r requirements.txt
-else
-    echo "requirements.txt not found! Please ensure the file is in the current directory."
-    exit 1
-fi
-
+echo "Activating eims2vec environment"
+conda activate eims2vec
+conda install pytorch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 pytorch-cuda=12.1 -c pytorch -c nvidia -y
+conda install pytorch::faiss-gpu
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 echo "Environment setup complete!"
