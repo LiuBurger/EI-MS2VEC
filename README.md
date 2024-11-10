@@ -8,7 +8,7 @@ Contact: liuburger@qq.com
 
 ## Installation
 
-The cuda version is 12.1
+The suggested python version is 3.11.5 and the cuda version is 12.1
 
 ### Get clone
 Clone this repository by:
@@ -32,7 +32,7 @@ And then put the lib under 'EI-MS2VEC/data/mine/'
 
 You need to get the NIST17 mainlib and replib by yourself, and follow the explore_nist17.ipynb to process the raw data.
 
-Test hit rate by:
+### Test hit rate by:
 
     conda activate eims2vec
     nohup python -Bu test.py >test.out
