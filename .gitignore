@@ -4,10 +4,10 @@ neims_model/
 
 
 *.txt
-!requirements.txt
 *.out
 *.sdf
 *.pt
+!extra10.pt
 *.csv
 *.sdf
 *.mgf
