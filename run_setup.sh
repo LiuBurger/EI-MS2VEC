@@ -12,5 +12,4 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 conda install pytorch::faiss-gpu -y
 pip install rdkit
 pip install matchms
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 echo "Environment setup complete!"
