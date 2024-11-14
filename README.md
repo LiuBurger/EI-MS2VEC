@@ -25,12 +25,9 @@ Create virtual environment and install packages:
 
 
 ### Get dataset
-Get expanded in-silico library from:
-https://zenodo.org/records/13968329
+Get expanded in-silico library from: https://zenodo.org/records/13968329, and then put the lib under 'EI-MS2VEC/data/mine/'
 
-And then put the lib under 'EI-MS2VEC/data/mine/'
-
-You need to get the NIST17 (https://chemdata.nist.gov/dokuwiki/doku.php?id=chemdata:nist17) mainlib and replib by yourself, and follow the explore_nist17.ipynb to process the raw data to get test set. 
+You need to get the NIST17 (https://chemdata.nist.gov/dokuwiki/doku.php?id=chemdata:nist17) mainlib and replib by yourself, and follow the explore_nist17.ipynb to process the raw data to get test set (put it under 'EI-MS2VEC/data/mine/'). 
 
 The metadata of test set (https://github.com/Qiong-Yang/FastEI/blob/main/data/NEIMS_test_11499molecules.csv) is supplied by FastEI and the extra test set (https://github.com/Qiong-Yang/FastEI/tree/main/data/extra_test_set) is supplied too.
 
