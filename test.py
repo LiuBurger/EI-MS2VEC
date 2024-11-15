@@ -21,7 +21,11 @@ def test(args):
                             num_workers=args.num_workers, collate_fn=collate_fun_emb)
     
     print('Testing...')
-    gpu = args.gpu
+    device = pt.device('cuda:0' if pt.cuda.is_available() else 'cpu')
+    if device.type == 'cuda':
+        gpu = 0
+    else:
+        raise ValueError('No GPU available!')
     model = Spec2Emb().to(gpu)
     model.load_state_dict(pt.load(args.model_path, map_location='cpu'))
     embeddings_lib = gen_embeddings(model, loader_lib, gpu, power=0.4) 
@@ -40,7 +44,6 @@ def test(args):
 
 def main():
     parser = ArgumentParser(description='Finetune model')
-    parser.add_argument('--gpu', type=int, default=6)
     parser.add_argument('--test_batch', type=int, default=2048)
     parser.add_argument('--num_workers', type=int, default=8)
     parser.add_argument('--model_path', type=str, default='./model/mass_ft_p0.4_epoch2.pth')
@@ -51,4 +54,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# nohup python -Bu test.py > test.out
+# nohup python -Bu test.py >test.out
