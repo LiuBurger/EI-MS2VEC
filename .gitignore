@@ -4,11 +4,16 @@ neims_model/
 
 
 *.txt
+!test_set_inchikey.txt
+!train_set_inchikey.txt
+!validation_set_inchikey.txt
+!test_set_smiles.txt
+!train_set_smiles.txt
+!validation_set_smiles.txt
 *.out
 *.sdf
 *.pt
 !extra10.pt
-*.csv
 *.sdf
 *.mgf
 *.db
