@@ -14,6 +14,10 @@ neims_model/
 *.sdf
 *.pt
 !extra10.pt
+*.pth
+!base_peak0.01_epoch4.pth
+!mass_ft_p0.4_epoch2.pth
+!mass_ft_p0.5_epoch2.pth
 *.sdf
 *.mgf
 *.db

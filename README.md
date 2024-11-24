@@ -11,11 +11,16 @@ Contact: liuburger@qq.com
 The suggested python version is 3.11.5 and the cuda version is 12.1
 
 ### Get clone
-Clone this repository by:
+#### 1.Clone this repository by:
     
     git clone https://github.com/xfcui/EI-MS2VEC.git
 
-Create virtual environment and install packages:
+#### 2.Create virtual environment: 
+
+    conda create -n eims2vec python=3.11.5 -y
+    conda activate eims2vec
+
+#### 3.Install packages:
     
     cd EI-MS2VEC
     chmod +x run_setup.sh
