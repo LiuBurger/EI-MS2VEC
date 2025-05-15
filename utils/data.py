@@ -62,7 +62,7 @@ def collate_fun(keep_prob:np.array, neg_prob:np.array, neg_num:int=5, min_len_mz
     def collate_fn(batch):
         # con: context, cen: center
         mzs_con, masks_con, poss_cen, batch_idx, negs_cen, masks_neg = [], [], [], [], [], []
-        max_len = max([len(mz) for mz, _ in batch])
+        max_len = max(len(mz) for mz, _ in batch)
         idx = 0
         for mz, inten in batch:
             len_mz = len(mz)
@@ -101,7 +101,7 @@ def collate_fun(keep_prob:np.array, neg_prob:np.array, neg_num:int=5, min_len_mz
 
 def collate_fun_emb(batch):
     mzs_con, intens_con, masks = [], [], []
-    max_len = max([len(mz) for mz, _ in batch])
+    max_len = max(len(mz) for mz, _ in batch)
     for mz, inten in batch:
         len_mz = len(mz)
         pad_num = max_len - len_mz

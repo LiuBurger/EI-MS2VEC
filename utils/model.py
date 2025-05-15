@@ -18,11 +18,13 @@ class Spec2Emb(nn.Module):
         )
         self.trip_loss = nn.TripletMarginLoss(margin=1.0, p=2)
 
-    def _compute_embedding(self, mzs, intens, masks, power):
-        embs = self.emb_cen(mzs)
+    def _compute_embedding(self, data, power):
+        mzs, intens, masks = data  # [batch, seq]
+        embs = self.spec_emb(mzs) # [batch, seq, emb_dim]
         embs = embs * masks.unsqueeze(-1)
-        intens = pt.pow(intens, power).unsqueeze(-1)
-        embs = (embs * intens).sum(dim=1)
+        intens = pt.pow(intens, power) # [batch, seq]
+        intens = intens.unsqueeze(-1)  # [batch, seq, 1]
+        embs = (embs * intens).sum(dim=1) # [batch, emb_dim]
         return embs
 
     def forward(self, data, mode:str='train', power:float=0.5):
@@ -42,9 +44,8 @@ class Spec2Emb(nn.Module):
             neg_score = pt.clamp(neg_score, max=self.max_exp, min=-self.max_exp)
             neg_score = -F.logsigmoid(-neg_score).sum(dim=-1)
             return (pos_score + neg_score).sum() 
-        elif mode == 'emb': # emb模式下的masks只mask掉了padding 
-            mzs_all, intens_all, masks_all = data  # [batch, seq]
-            return self._compute_embedding(mzs_all, intens_all, masks_all, power)
+        elif mode == 'emb':            
+            return self._compute_embedding(data, power)
         elif mode == 'finetune':
             data_mea, data_pre_hit, data_pre_nhit = data
             embs_mea = self._compute_embedding(*data_mea, power)

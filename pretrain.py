@@ -49,8 +49,8 @@ def train(args):
     lr = args.lr
     optimizer = optim.SGD(model.parameters(), lr=lr)
     scheduler = Linear_Scheduler(optimizer, epochs, start_lr=lr, end_lr=args.end_lr)
-    f = open(args.file_name+'.txt', 'w')
     model_name = args.model_name
+    f = open(model_name+'.txt', 'w')    
     max_metrics = {'expand': [0, 0], 'insilico': [0, 0]}
 
     print('Start training...')
@@ -102,7 +102,6 @@ def main():
     parser.add_argument('--epochs', type=int, default=10)
     parser.add_argument('--lr', type=float, default=0.025)
     parser.add_argument('--end_lr', type=float, default=2.5e-4)
-    parser.add_argument('--file_name', type=str, default='pretrain')
     parser.add_argument('--model_name', type=str, default='pretrain')
     args = parser.parse_args()
     train(args)
