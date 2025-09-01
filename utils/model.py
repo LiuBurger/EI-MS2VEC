@@ -20,11 +20,10 @@ class Spec2Emb(nn.Module):
 
     def _compute_embedding(self, data, power):
         mzs, intens, masks = data  # [batch, seq]
-        embs = self.spec_emb(mzs) # [batch, seq, emb_dim]
+        embs = self.emb_cen(mzs) # [batch, seq, emb_dim]
         embs = embs * masks.unsqueeze(-1)
         intens = pt.pow(intens, power) # [batch, seq]
-        intens = intens.unsqueeze(-1)  # [batch, seq, 1]
-        embs = (embs * intens).sum(dim=1) # [batch, emb_dim]
+        embs = (embs * intens.unsqueeze(-1)).sum(dim=1) # [batch, emb_dim]
         return embs
 
     def forward(self, data, mode:str='train', power:float=0.5):
@@ -48,9 +47,9 @@ class Spec2Emb(nn.Module):
             return self._compute_embedding(data, power)
         elif mode == 'finetune':
             data_mea, data_pre_hit, data_pre_nhit = data
-            embs_mea = self._compute_embedding(*data_mea, power)
-            embs_pre_hit = self._compute_embedding(*data_pre_hit, power)
-            embs_pre_nhit = self._compute_embedding(*data_pre_nhit, power)
+            embs_mea = self._compute_embedding(data_mea, power)
+            embs_pre_hit = self._compute_embedding(data_pre_hit, power)
+            embs_pre_nhit = self._compute_embedding(data_pre_nhit, power)
             # batchsize, emb_dim
             embs_mea = F.normalize(embs_mea, p=2, dim=-1)
             embs_pre_hit = F.normalize(embs_pre_hit, p=2, dim=-1)

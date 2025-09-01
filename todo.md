@@ -8,3 +8,5 @@
 算10个vector和200M个vector之间的距离
 
 
+哪个peak从Inten变成sqrt(inten)之后排名上升
+找出
