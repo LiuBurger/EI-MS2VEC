@@ -1,7 +1,7 @@
 import torch as pt
 import torch.nn as nn
 import torch.nn.functional as F
-import math
+from math import log
 
 
 class Spec2Emb(nn.Module):
@@ -81,7 +81,7 @@ class Posi_Enco(nn.Module):
         pe = pt.zeros((max_len, d_model), dtype=pt.float32)
         position = pt.arange(max_len).unsqueeze(-1)
         div_term = pt.exp(pt.arange(0, d_model, 2) * 
-                          -(math.log(10000.0) / d_model))
+                          -(log(10000.0) / d_model))
         pe[:, 0::2] = pt.sin(position * div_term)
         pe[:, 1::2] = pt.cos(position * div_term)
         self.register_buffer('pe', pe) # 不需要更新的参数

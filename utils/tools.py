@@ -4,7 +4,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 import faiss
 from datetime import datetime
-import os
+from os.path import exists
 
 
 def gen_embeddings(model:nn.Module, loader:DataLoader, gpu:int, power:float=0.5):
@@ -98,7 +98,7 @@ def hit_rate_topk(query_mols:list, idx:list, db_mols:list, topk:int=100, step:in
     assert topk % step == 0, 'topk should be divisible by step.'
     topk_hit = pt.zeros(topk//step)
     for i in range(N):
-        candidate_inchikey = []
+        candidate_inchikey = [] # 采用增量法计算topk命中率
         for k in range(0, topk, step):
             candidate_idx_new = idx[i][k:k+step]
             candidate_inchikey_new = [db_mols[j].metadata[mode] for j in candidate_idx_new]
@@ -130,5 +130,7 @@ def mass_filter_5Da(query_mols:list, idx:list, db_mols:list, mode:str='inchikey'
 
 
 def save_model(model:nn.Module, model_name:str, epoch:int):
-    if not os.path.exists(f'./model/{model_name}_epoch{epoch+1}.pth'):
+    if not exists(f'./model/{model_name}_epoch{epoch+1}.pth'):
         pt.save(model.state_dict(), f'./model/{model_name}_epoch{epoch+1}.pth')
+    else:
+        print('Model already exists!')
