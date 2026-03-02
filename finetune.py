@@ -53,19 +53,18 @@ def finetune(args):
         loader_ft = DataLoader(dataset_ft, args.ft_batch, shuffle=True, 
                                num_workers=args.num_workers, collate_fn=collate_fun_finetune)
         model.train()
-        for j in range(5):
-            finetune_loss = []
-            for i, Data in enumerate(tqdm(loader_ft, unit='batch')):
-                Data = [d.to(gpu) for data in Data for d in data]
-                optimizer.zero_grad()
-                loss = model((Data[:3], Data[3:6], Data[6:9]), mode='finetune', power=0.4)
-                finetune_loss.append(loss.item())
-                loss.backward()
-                optimizer.step()
-                if (i+1) %300 ==0:
-                    loss = np.mean(finetune_loss)
-                    print(f'Total Loss: {loss}')
-                    finetune_loss = []
+        finetune_loss = []
+        for i, Data in enumerate(tqdm(loader_ft, unit='batch')):
+            Data = [d.to(gpu) for data in Data for d in data]
+            optimizer.zero_grad()
+            loss = model((Data[:3], Data[3:6], Data[6:9]), mode='finetune', power=0.4)
+            finetune_loss.append(loss.item())
+            loss.backward()
+            optimizer.step()
+            if (i+1) %300 ==0:
+                loss = np.mean(finetune_loss)
+                print(f'Total Loss: {loss}')
+                finetune_loss = []
 
         print(f'===================================Test_epoch{epoch+1}======================================')
         f.write('\n\nTest_epoch%d\n' % (epoch+1))

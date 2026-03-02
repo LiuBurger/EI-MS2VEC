@@ -1,5 +1,4 @@
 import numpy as np
-from copy import deepcopy
 import torch as pt
 from torch.utils.data import Dataset
     
@@ -18,7 +17,7 @@ class SpecDataset(Dataset):
         idx_ = self.map[idx]
         mzs = self.spectra[idx_].mz.astype(int).tolist()
         intens = self.spectra[idx_].intensities
-        return deepcopy(mzs), deepcopy(intens)
+        return mzs, intens
     
     def __len__(self):
         return len(self.map)
@@ -49,9 +48,7 @@ class SpecDataset_finetune(Dataset):
         intens_pre_hit = self.spec_pre[idx_pre_hit].intensities
         mzs_pre_nhit = self.spec_pre[idx_pre_nhit].mz.astype(int).tolist()
         intens_pre_nhit = self.spec_pre[idx_pre_nhit].intensities
-        return (deepcopy(mzs_mea), deepcopy(intens_mea)), \
-                (deepcopy(mzs_pre_hit), deepcopy(intens_pre_hit)), \
-                (deepcopy(mzs_pre_nhit), deepcopy(intens_pre_nhit))
+        return (mzs_mea, intens_mea), (mzs_pre_hit, intens_pre_hit), (mzs_pre_nhit, intens_pre_nhit)
 
     def __len__(self):
         return len(self.map[0])
