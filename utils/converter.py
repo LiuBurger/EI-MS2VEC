@@ -83,32 +83,6 @@ def gen_spectrums_from_csv(file_list:list, save:bool=False, save_path:str='data/
     return spectra
 
 
-# import sqlite3
-# gradedb1 = sqlite3.connect("data/author/The_expanded_in-silico_library.db")
-# cursor1 = gradedb1.cursor()
-# content1 = cursor1.execute("SELECT COMPID, SMILES, MZS, INTENSITYS, EXACTMOLWT from IN_SILICO_LIBRARY").fetchall()
-# print(len(content1))
-# import tqdm
-
-# spectrums1 = []
-# for c1 in tqdm.tqdm(content1):
-#     compid = c1[0]
-#     smiles = c1[1]
-#     mzs_str = c1[2]
-#     mzs = re.findall(r'\d+', mzs_str)
-#     mzs = np.array([float(mz) for mz in mzs])
-#     intensitys_str = c1[3]
-#     intensitys = re.findall(r'\d+\.\d+', intensitys_str)
-#     intensitys = np.array([float(intensity) for intensity in intensitys])
-#     mw = c1[4]
-#     s = Spectrum(mzs, intensitys, metadata={
-#         'COMPID': compid, 'SMILES': smiles, 'MW':mw
-#     })
-#     spectrums1.append(s)
-# print(len(spectrums1))
-# save_as_mgf(spectrums1, './data/author/The_expanded_in-silico_library.mgf')
-
-
 def read_msp2mgf(file_path:str, save_path:str=None):
     f = open(file_path, 'r')
     mols = f.read().split('\n\n')[:-1]
